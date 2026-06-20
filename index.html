@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snoopy Bento Portfolio Layout</title>
+    <style>
+        /* ==========================================
+           1. CORE SYSTEM DESIGN TOKENS
+           ========================================== */
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght=400;700&family=Poppins:wght=400;700;900&display=swap');
+
+        :root {
+            --bg-mustard: #E2B13C;       /* Perfect image background matching */
+            --card-cream: #F4F1EA;       /* Main components off-white */
+            --pill-gray: #BDB5A9;        /* Retro pill labels tint */
+            --ticket-tint: #C9C4BC;      /* Left side ticket frame contrast */
+            --text-dark: #000000;
+            --text-green: #1A331E;       /* "AIRING ON CINEMA" deep emerald */
+            
+            --font-heading: 'Poppins', sans-serif;
+            --font-serif: 'Georgia', serif;
+            --font-mono: 'Courier Prime', monospace;
+            
+            --border-thick: 2px solid #000000;
+            --border-divider: 4px solid #000000;
+        }
+
+        /* ==========================================
+           2. CANVAS RESET & WRAPPER STRUCTURE
+           ========================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-mustard);
+            font-family: var(--font-heading);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 15px;
+        }
+
+        /* Matches the tight, vertical content layout stream */
+        .master-container {
+            width: 100%;
+            max-width: 500px; 
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ==========================================
+           3. HERO BLOCK: SNOOPY SLEEPING IMAGES
+           ========================================== */
+        .hero-section {
+            display: grid;
+            grid-template-columns: 1fr 1.05fr;
+            gap: 15px;
+            align-items: start;
+        }
+
+        .hero-left-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .hero-frame {
+            background-color: var(--card-cream);
+            border-radius: 16px;
+            overflow: hidden;
+            border: var(--border-thick);
+            aspect-ratio: 1.55 / 1;
+            position: relative;
+        }
+
+        .hero-frame .label {
+            position: absolute;
+            bottom: 2px;
+            left: 8px;
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--text-dark);
+            z-index: 2;
+        }
+
+        .hero-right-text {
+            color: var(--text-dark);
+            padding-top: 5px;
+        }
+
+        .hero-right-text h1 {
+            font-size: 60px;
+            font-weight: 900;
+            line-height: 0.85;
+            text-transform: lowercase;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+
+        .hero-right-text .tagline {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* ==========================================
+           4. RETRO THEATRE TICKETS (PORTFOLIO FIELDS)
+           ========================================== */
+        .tickets-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .cinema-ticket {
+            background-color: var(--card-cream);
+            border-radius: 24px;
+            border: var(--border-thick);
+            display: grid;
+            grid-template-columns: 1fr 1.85fr;
+            overflow: hidden;
+            height: 145px;
+        }
+
+        .ticket-left-art {
+            border-right: var(--border-divider);
+            background-color: var(--ticket-tint);
+            overflow: hidden;
+        }
+
+        .ticket-right-data {
+            padding: 12px 15px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .ticket-header {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            color: var(--text-green);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: normal;
+            line-height: 1;
+        }
+
+        .ticket-body h2 {
+            font-family: var(--font-serif);
+            font-size: 24px;
+            font-weight: normal;
+            color: var(--text-dark);
+            margin: 2px 0 4px 0;
+            line-height: 1.1;
+        }
+
+        .ticket-meta-string {
+            font-family: sans-serif;
+            font-size: 10px;
+            font-weight: bold;
+            color: #222;
+            line-height: 1.3;
+        }
+
+        /* Circular Punchout Simulation Icon */
+        .ticket-punch-notch {
+            position: absolute;
+            right: -16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background-color: var(--bg-mustard);
+            border-radius: 50%;
+            border: var(--border-thick);
+        }
+
+        /* CSS Barcode Matrix Engine */
+        .barcode-wrapper {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .barcode-lines {
+            display: flex;
+            align-items: flex-end;
+            height: 32px;
+            width: 80px;
+        }
+
+        .barcode-lines span {
+            background-color: var(--text-dark);
+            height: 100%;
+        }
+        .barcode-lines span:nth-child(odd) { width: 1.5px; margin-right: 1.5px; }
+        .barcode-lines span:nth-child(even) { width: 3px; margin-right: 1px; }
+        .barcode-lines span:nth-child(3n) { width: 1px; }
+
+        .barcode-digits {
+            font-family: var(--font-mono);
+            font-size: 8px;
+            margin-top: 1px;
+            transform: scale(0.85);
+        }
+
+        /* ==========================================
+           5. MIDDLE BLOCK: FILM STRIP & BENTO BOX
+           ========================================== */
+        .bento-middle-row {
+            display: grid;
+            grid-template-columns: 1fr 1.35fr;
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* Angled Retro Film Cell Component */
+        .angled-film-strip-wrapper {
+            position: relative;
+            transform: rotate(-13deg) scale(0.95) translateX(-5px);
+            margin-top: 10px;
+            z-index: 5;
+        }
+
+        .film-strip-body {
+            background: #CBC7C0;
+            border-left: 12px dashed #000;
+            border-right: 12px dashed #000;
+            border-top: 3px solid #000;
+            border-bottom: 3px solid #000;
+            padding: 8px 3px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .film-strip-cell {
+            background: #FFF;
+            border: 2px solid #000;
+            aspect-ratio: 1 / 1.1;
+            overflow: hidden;
+        }
+
+        /* Hand-drawn Vector Magnifier Representation */
+        .magnifying-glass-vector {
+            position: absolute;
+            bottom: -15px;
+            right: -20px;
+            width: 75px;
+            height: 75px;
+            pointer-events: none;
+            z-index: 6;
+        }
+
+        /* Bento Headliner */
+        .bento-box-headline {
+            background-color: var(--card-cream);
+            border-radius: 32px;
+            border: var(--border-thick);
+            padding: 24px;
+            aspect-ratio: 1.05 / 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .bento-title-text {
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 0.88;
+            letter-spacing: -2px;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        .bento-title-text::after {
+            content: '💡';
+            font-size: 28px;
+            position: absolute;
+            margin-left: 6px;
+            top: -4px;
+        }
+
+        .bento-box-footer {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ==========================================
+           6. ARTICLE INTERACTIVE COMPONENT
+           ========================================== */
+        .article-card-container {
+            position: relative;
+            margin-top: 15px;
+        }
+
+        /* Peeking Illustration Box Placement */
+        .peeking-snoopy-anchor {
+            position: absolute;
+            top: -38px;
+            right: 35px;
+            width: 100px;
+            height: 40px;
+            z-index: 4;
+        }
+
+        .peeking-snoopy-anchor img {
+            object-fit: contain;
+            object-position: bottom;
+        }
+
+        .article-card-body {
+            background-color: var(--card-cream);
+            border-radius: 28px;
+            border: var(--border-thick);
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1.55fr 1fr;
+            gap: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .article-left-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .article-left-content h3 {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .article-sublabel {
+            font-size: 8px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            color: #555;
+        }
+
+        .article-p-text {
+            font-size: 9px;
+            line-height: 1.3;
+            color: #222;
+            margin: 8px 0;
+            font-weight: 500;
+        }
+
+        .article-url-line {
+            font-size: 8px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .article-bottom-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .slider-pills {
+            display: flex;
+            gap: 4px;
+        }
+
+        .slider-pill {
+            width: 14px;
+            height: 5px;
+            background-color: #000;
+            border-radius: 2px;
+            opacity: 0.2;
+        }
+
+        .slider-pill.active {
+            opacity: 1;
+            background-color: #E2B13C;
+            width: 20px;
+        }
+
+        .read-more-trigger {
+            font-size: 13px;
+            font-weight: 900;
+            text-decoration: underline;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .article-right-graphic {
+            border: var(--border-thick);
+            border-radius: 16px;
+            overflow: hidden;
+            background: #FFF;
+        }
+
+        .article-right-graphic img {
+            object-fit: contain;
+            padding: 5px;
+        }
+
+        /* ==========================================
+           7. APP INTERACTIVE LINK BENTO MATRIX
+           ========================================== */
+        .app-link-grid-matrix {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr 1fr;
+            gap: 10px;
+            align-items: start;
+        }
+
+        .matrix-column {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Combined Art Slots Layout */
+        .twin-art-layout {
+            display: flex;
+            gap: 8px;
+        }
+
+        .small-square-art {
+            background: #FFF;
+            border: var(--border-thick);
+            border-radius: 14px;
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* Action Pill Framework */
+        .ui-pill-action {
+            background-color: var(--card-cream);
+            border: var(--border-thick);
+            border-radius: 10px;
+            padding: 7px 8px;
+            font-size: 11px;
+            font-weight: 900;
+            text-align: center;
+            box-shadow: 0 2px 0px #000;
+            cursor: pointer;
+        }
+
+        /* Input Tag Framework */
+        .search-pill-tag {
+            background-color: var(--pill-gray);
+            border: 1px solid rgba(0,0,0,0.15);
+            border-radius: 8px;
+            padding: 6px 8px;
+            font-size: 8px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #111;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .search-pill-tag::before {
+            content: '🔍';
+            font-size: 8px;
+            opacity: 0.8;
+        }
+
+        .featured-tall-card {
+            background: #FFF;
+            border: var(--border-thick);
+            border-radius: 14px;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="master-container">
+
+        <div class="hero-section">
+            <div class="hero-left-grid">
+                <div class="hero-frame">
+                    <img src="45fd21b5e6a03ea7681a6602d42fa914.jpg" alt="Snoopy Sleeping on Roof">
+                    <div class="label">1</div>
+                </div>
+                <div class="hero-frame">
+                    <img src="a2c6d1efaf3a5f046e27935184b1ab5d.jpg" alt="Snoopy Big Yawn">
+                    <div class="label">2</div>
+                </div>
+            </div>
+            <div class="hero-right-text">
+                <h1>sleep,<br>like<br>snoopy</h1>
+                <div class="tagline">PEANUTTT !</div>
+            </div>
+        </div>
+
+        <div class="tickets-container">
+            <div class="cinema-ticket">
+                <div class="ticket-left-art">
+                    <img src="0f12228070404f98b427cfa7edf7267d.jpg" alt="Snoopy Holding Red Phone">
+                </div>
+                <div class="ticket-right-data">
+                    <div class="ticket-punch-notch"></div>
+                    <div>
+                        <div class="ticket-header">Airing On Cinema</div>
+                        <div class="ticket-body">
+                            <h2>education!</h2>
+                            <div class="ticket-meta-string">
+                                Re: Jubilee Memorial School<br>
+                                Date: Class 11 (Science)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="barcode-wrapper">
+                        <div class="barcode-lines"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                        <div class="barcode-digits">0 00035 54562 0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cinema-ticket">
+                <div class="ticket-left-art">
+                    <img src="9d43800f268dd02f6b3ec145b8adff00.jpg" alt="Snoopy Driving Toy Convertible Car">
+                </div>
+                <div class="ticket-right-data">
+                    <div class="ticket-punch-notch"></div>
+                    <div>
+                        <div class="ticket-header">Airing On Cinema</div>
+                        <div class="ticket-body">
+                            <h2>hobbies!</h2>
+                            <div class="ticket-meta-string">
+                                Re: Art, Music & Web Design<br>
+                                Date: December 3, 1983
+                            </div>
+                        </div>
+                    </div>
+                    <div class="barcode-wrapper">
+                        <div class="barcode-lines"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                        <div class="barcode-digits">0 00035 54562 0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bento-middle-row">
+            <div class="angled-film-strip-wrapper">
+                <div class="film-strip-body">
+                    <div class="film-strip-cell">
+                        <img src="fbcb74f061bdcbddb9cc428d0ab8739e.jpg" alt="Snoopy Sitting On Swing">
+                    </div>
+                    <div class="film-strip-cell">
+                        <img src="4684e56ebb60f99ac1085cedb0015ced.jpg" alt="Snoopy Shouting AUGH">
+                    </div>
+                </div>
+                <svg class="magnifying-glass-vector" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="40" cy="40" r="22" stroke="black" stroke-width="5" fill="rgba(255,255,255,0.15)"/>
+                    <line x1="56" y1="56" x2="82" y2="82" stroke="black" stroke-width="7" stroke-linecap="round"/>
+                </svg>
+            </div>
+
+            <div class="bento-box-headline">
+                <div class="bento-title-text">Bird,<br>snoopy<br>& ride.</div>
+                <div class="bento-box-footer">Snoopy From Peanut</div>
+            </div>
+        </div>
+
+        <div class="article-card-container">
+            <div class="peeking-snoopy-anchor">
+                <img src="45fd21b5e6a03ea7681a6602d42fa914-removebg-preview.png" alt="Peeking Transparent Snoopy">
+            </div>
+            <div class="article-card-body">
+                <div class="article-left-content">
+                    <div>
+                        <h3>snoopy</h3>
+                        <div class="article-sublabel">SNOOPY N PEANUT THE SERIES</div>
+                        <p class="article-p-text">started in 1983 this animated series was the childhood of many adults. from its wild imagination snoopy to the small child Charlie brown you make it we got you covered.</p>
+                        <div class="article-url-line">WWW.PEANUT.CO</div>
+                    </div>
+                    <div class="article-bottom-row">
+                        <div class="slider-pills">
+                            <div class="slider-pill"></div>
+                            <div class="slider-pill"></div>
+                            <div class="slider-pill active"></div>
+                        </div>
+                        <button class="read-more-trigger">Read more</button>
+                    </div>
+                </div>
+                <div class="article-right-graphic">
+                    <img src="4684e56ebb60f99ac1085cedb0015ced.jpg" alt="Snoopy Retro Comic Art Frame">
+                </div>
+            </div>
+        </div>
+
+        <div class="app-link-grid-matrix">
+            <div class="matrix-column">
+                <div class="twin-art-layout">
+                    <div class="small-square-art">
+                        <img src="0f12228070404f98b427cfa7edf7267d.jpg" alt="Snoopy Red Telephone Square">
+                    </div>
+                    <div class="small-square-art">
+                        <im
