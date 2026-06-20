@@ -499,8 +499,22 @@
             aspect-ratio: 1 / 1;
         }
     </style>
-</head>
-<body>
+</head> 
+    <body>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Target the existing "Read more" button using its class name
+            const readMoreBtn = document.querySelector('.read-more-trigger');
+            
+            if (readMoreBtn) {
+                // Attach a click event listener to handle the redirection
+                readMoreBtn.addEventListener('click', function() {
+                    window.open('https://www.google.com/search?q=the+peanut+animated+series', '_blank');
+                });
+            }
+        });
+    </script>
+
 
     <div class="master-container">
 
